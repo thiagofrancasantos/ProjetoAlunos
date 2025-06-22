@@ -1,0 +1,146 @@
+<div class="container">
+  <!-- Formulário de Cadastro/Edição -->
+  <div class="form-container">
+    <h2>{{ isEditing ? "Editar Aluno" : "Cadastrar Aluno" }}</h2>
+    <form [formGroup]="alunoForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="nome">Nome</label>
+        <input
+          type="text"
+          id="nome"
+          formControlName="nome"
+          placeholder="Nome"
+          [class.error]="
+            alunoForm.get('nome')?.invalid && alunoForm.get('nome')?.touched
+          "
+        />
+        <span
+          class="error-message"
+          *ngIf="alunoForm.get('nome')?.errors?.['required'] && alunoForm.get('nome')?.touched"
+        >
+          Nome é obrigatório
+        </span>
+        <span
+          class="error-message"
+          *ngIf="alunoForm.get('nome')?.errors?.['minlength'] && alunoForm.get('nome')?.touched"
+        >
+          Mínimo 3 caracteres
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Email"
+          [class.error]="
+            alunoForm.get('email')?.invalid && alunoForm.get('email')?.touched
+          "
+        />
+        <span
+          class="error-message"
+          *ngIf="alunoForm.get('email')?.errors?.['required'] && alunoForm.get('email')?.touched"
+        >
+          Email é obrigatório
+        </span>
+        <span
+          class="error-message"
+          *ngIf="alunoForm.get('email')?.errors?.['email'] && alunoForm.get('email')?.touched"
+        >
+          Email inválido
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="telefone">Telefone</label>
+        <input
+          type="text"
+          id="telefone"
+          formControlName="telefone"
+          placeholder="Telefone"
+          [class.error]="
+            alunoForm.get('telefone')?.invalid &&
+            alunoForm.get('telefone')?.touched
+          "
+        />
+        <span
+          class="error-message"
+          *ngIf="alunoForm.get('telefone')?.errors?.['required'] && alunoForm.get('telefone')?.touched"
+        >
+          Telefone é obrigatório
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="id_curso">ID do Curso</label>
+        <input
+          type="number"
+          id="id_curso"
+          formControlName="id_curso"
+          placeholder="ID do Curso"
+          [class.error]="
+            alunoForm.get('id_curso')?.invalid &&
+            alunoForm.get('id_curso')?.touched
+          "
+        />
+        <span
+          class="error-message"
+          *ngIf="alunoForm.get('id_curso')?.errors?.['required'] && alunoForm.get('id_curso')?.touched"
+        >
+          ID do curso é obrigatório
+        </span>
+      </div>
+
+      <div class="button-group">
+        <button type="submit" [disabled]="!alunoForm.valid">
+          {{ isEditing ? "Atualizar" : "Cadastrar" }}
+        </button>
+        <button
+          type="button"
+          *ngIf="isEditing"
+          (click)="cancelEdit()"
+          class="cancel-button"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Tabela de Alunos -->
+  <div class="table-container">
+    <h2>Lista de Alunos</h2>
+    <table *ngIf="alunos.length > 0; else noData">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Telefone</th>
+          <th>ID do Curso</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let aluno of alunos">
+          <td>{{ aluno.nome }}</td>
+          <td>{{ aluno.email }}</td>
+          <td>{{ aluno.telefone }}</td>
+          <td>{{ aluno.id_curso }}</td>
+          <td>
+            <button (click)="editAluno(aluno)" class="edit-button">
+              Editar
+            </button>
+            <button (click)="deleteAluno(aluno.id_aluno)" class="delete-button">
+              Excluir
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noData>
+      <p>Nenhum aluno cadastrado.</p>
+    </ng-template>
+  </div>
+</div>
